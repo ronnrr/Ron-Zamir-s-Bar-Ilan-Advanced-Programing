@@ -9,7 +9,28 @@
  * @param[in] width Width of the matrix
  * @return ErrorCode
  */
-ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width);
+ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
+    int i = 0;
+    if (height < 1) {
+        return FAILED_HEIGHT_ERROR;
+    }
+    else if (width < 1) {
+        return FAILED_WIDTH_ERROR;
+    }
+    matrix->height = height;
+    matrix->width = width;
+    matrix->values = (float**)(calloc)(height, sizeof(float*));
+    if (matrix->values == nullptr) {
+        return MEMORY_ALLC_ERROR;
+    }
+    for (i = 0; i < height; i++) {
+        matrix->values[i] = (float*)(calloc)(width, sizeof(float));
+        if (matrix->values[i] == nullptr) {
+            return MEMORY_ALLC_ERROR;
+        }
+    }
+    return ERROR_SUCCESS;
+}
 
 /**
  * @brief Creates a new matrix from an old matrix.
