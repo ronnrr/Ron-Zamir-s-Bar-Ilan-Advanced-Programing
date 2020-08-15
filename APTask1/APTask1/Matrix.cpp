@@ -217,7 +217,7 @@ ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
         return FAILED_WIDTH_ERROR;
     }
     else if (rhs.width != lhs.width || rhs.height != lhs.height) {
-        return INAPROPRIATE_MATRIX_DIMENSIONS_FOR_FUNCTIONS_ERROR;
+        return INAPROPRIATE_MATRIX_DIMENSIONS_FOR_ADDING_ERROR;
     }
     result = (PMatrix*)(malloc)(1 * sizeof(PMatrix));
     if (result == nullptr) {
@@ -249,7 +249,58 @@ ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
  * @param[in] rhs The right hand side of the multiplication operation.
  * @return ErrorCode
  */
-ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs);
+ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    if (result == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
+    else if (lhs.height < 1) {
+        return FAILED_HEIGHT_ERROR;
+    }
+    else if (lhs.width < 1) {
+        return FAILED_WIDTH_ERROR;
+    }
+    else if (rhs.height < 1) {
+        return FAILED_HEIGHT_ERROR;
+    }
+    else if (rhs.width < 1) {
+        return FAILED_WIDTH_ERROR;
+    }
+    else if (lhs.width != rhs.height) {
+        return INAPROPRIATE_MATRIX_DIMENSIONS_FOR_MULTIPLICATION_ERROR;
+    }
+    result = (PMatrix*)(malloc)(1 * sizeof(PMatrix));
+    if (result == nullptr) {
+        return MEMORY_ALLC_ERROR;
+    }
+    result->height = lhs.height;
+    result->width = rhs.width;
+    result->values = (float**)(malloc)(result->height * sizeof(float*));
+    if (result->values == nullptr) {
+        return MEMORY_ALLC_ERROR;
+    }
+    for (i = 0; i < result->height; i++) {
+        result->values[i] = (float*)(malloc)(result->width * sizeof(float));
+        if (result->values[i] == nullptr) {
+            return MEMORY_ALLC_ERROR;
+        }
+    }
+    for (i = 0; i < result->height; i++) {
+        for (j = 0; j < result->width; j++) {
+            result->values[i][j] = 0;
+        }
+    }
+    for (i = 0; i < result->height; i++) {
+        for (j = 0; j < result->width; j++) {
+            for (k = 0; k < lhs.width; k++) {
+                result->values[i][j] += lhs.values[i][k] + rhs.values[k][j];
+            }
+        }
+    }
+    return ERROR_SUCCESS;
+}
 
 /**
  * @brief Multiplies a matrix with a scalar and stores the result in
@@ -260,4 +311,6 @@ ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs);
  * @param[in] scalar The scalar to multiply with.
  * @return ErrorCode
  */
-ErrorCode matrix_multiplyWithScalar(PMatrix matrix, double scalar);
+ErrorCode matrix_multiplyWithScalar(PMatrix matrix, double scalar) {
+
+}

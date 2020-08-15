@@ -37,8 +37,11 @@ const char* error_getErrorMessage(ErrorCode code) {
     if (code == OUT_OF_BOUNDS_ERROR) {
         return "Index accessed was out of bounds. Please try to enter a valid index set.";
     }
-    if (code == INAPROPRIATE_MATRIX_DIMENSIONS_FOR_FUNCTIONS_ERROR) {
-        return "The given matrixes do not share the dimentions required to execute such operators upon them.";
+    if (code == INAPROPRIATE_MATRIX_DIMENSIONS_FOR_ADDING_ERROR) {
+        return "The given matrixes do not share the same dimentions and thus cannot be added to one another.";
+    }
+    if (code == INAPROPRIATE_MATRIX_DIMENSIONS_FOR_MULTIPLICATION_ERROR) {
+        return "The given matrixes do not have a set of height and width apropriate to matrix multiplication. Try switching between the two or just discarding them altogether";
     }
     return nullptr;
 }
