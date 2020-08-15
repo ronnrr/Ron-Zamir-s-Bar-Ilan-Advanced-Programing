@@ -10,6 +10,9 @@
  * @return ErrorCode
  */
 ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
+    if (matrix == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
     int i = 0;
     if (height < 1) {
         return FAILED_HEIGHT_ERROR;
@@ -45,6 +48,9 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
  * @return ErrorCode
  */
 ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
+    if (result == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
     int i = 0;
     int j = 0;
     if (source.height < 1) {
@@ -98,7 +104,11 @@ void matrix_destroy(PMatrix matrix) {
  * @return ErrorCode
  */
 ErrorCode matrix_getHeight(CPMatrix matrix, uint32_t* result) {
+    if (result == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
     if (matrix.height < 1) {
+        *result = matrix.height;
         return FAILED_HEIGHT_ERROR;
     }
     *result = matrix.height;
@@ -112,7 +122,16 @@ ErrorCode matrix_getHeight(CPMatrix matrix, uint32_t* result) {
  * @param[out] result On output, contains the height of the matrix.
  * @return ErrorCode
  */
-ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result);
+ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result) {
+    if (result == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
+    if (matrix.width < 1) {
+        *result = matrix.width;
+        return FAILED_WIDTH_ERROR;
+    }
+    *result = matrix.width;
+}
 
 /**
  * @brief Sets a value to the matrix.

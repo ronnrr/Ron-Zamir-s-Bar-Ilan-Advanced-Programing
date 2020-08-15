@@ -31,5 +31,8 @@ const char* error_getErrorMessage(ErrorCode code) {
     if (code == NON_EXISTANT_MATRIX_ERROR) {
         return "Matrix sent to function either is not allocated properly or just doesn't exist.";
     }
+    if (code == NULL_POINTER_ERROR) {
+        return "Pointer given to function was a null pointer, and therefore the function was unable to proceed";
+    }
     return nullptr;
 }
