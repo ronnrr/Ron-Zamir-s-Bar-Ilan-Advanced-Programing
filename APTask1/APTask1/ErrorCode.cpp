@@ -19,7 +19,7 @@ bool error_isSuccess(ErrorCode code) {
  * @return const char* the textual representation of the error code.
  */
 const char* error_getErrorMessage(ErrorCode code) {
-    if (code = MEMORY_ALLC_ERROR) {
+    if (code == MEMORY_ALLC_ERROR) {
         return "Memory allocation failed.";
     }
     if (code == FAILED_HEIGHT_ERROR) {
@@ -28,4 +28,8 @@ const char* error_getErrorMessage(ErrorCode code) {
     if (code == FAILED_WIDTH_ERROR) {
         return "Given width is inapropriate and unsupported.";
     }
+    if (code == NON_EXISTANT_MATRIX_ERROR) {
+        return "Matrix sent to function either is not allocated properly or just doesn't exist.";
+    }
+    return nullptr;
 }

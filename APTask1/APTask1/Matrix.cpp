@@ -40,7 +40,33 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
  * @param[in] source The matrix to copy.
  * @return ErrorCode
  */
-ErrorCode matrix_copy(PMatrix* result, CPMatrix source);
+ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
+    int i = 0;
+    int j = 0;
+    if (source.height < 1) {
+        return FAILED_HEIGHT_ERROR;
+    }
+    else if (source.width < 1) {
+        return FAILED_WIDTH_ERROR;
+    }
+    result->height = source.height;
+    result->width = source.width;
+    result->values = (float**)(malloc)(source.height * sizeof(float*));
+    if (result->values == nullptr) {
+        return MEMORY_ALLC_ERROR;
+    }
+    for (i = 0; i < source.height; i++) {
+        result->values[i] = (float*)(malloc)(source.height * sizeof(float));
+        if (result->values[i] == nullptr) {
+            return MEMORY_ALLC_ERROR;
+        }
+    }
+    for (i = 0; i < source.height; i++) {
+        for (j = 0; j < source.width; j++) {
+            result->values[i][j] = source.values[i][j];
+        }
+    }
+}
 
 /**
  * @brief Destroys a matrix.

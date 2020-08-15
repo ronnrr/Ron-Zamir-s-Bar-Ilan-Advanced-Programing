@@ -14,7 +14,7 @@ typedef struct PMatrix {
 typedef const struct Matrix* CPMatrix;
 typedef const struct CPMatrix {
     const uint32_t const height;
-    const uint32_t const weight;
+    const uint32_t const width;
     const float** const values;
 }CPMatrix;
 

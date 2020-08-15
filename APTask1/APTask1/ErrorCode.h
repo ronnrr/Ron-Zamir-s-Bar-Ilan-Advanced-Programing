@@ -9,6 +9,7 @@ typedef enum {
     MEMORY_ALLC_ERROR = 1,
     FAILED_HEIGHT_ERROR = 2,
     FAILED_WIDTH_ERROR = 3,
+    NON_EXISTANT_MATRIX_ERROR = 4,
 } ErrorCode;
 
 /**
