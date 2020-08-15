@@ -17,6 +17,10 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
     else if (width < 1) {
         return FAILED_WIDTH_ERROR;
     }
+    matrix = (PMatrix*)(malloc)(1 * sizeof(PMatrix));
+    if (matrix == nullptr) {
+        return MEMORY_ALLC_ERROR;
+    }
     matrix->height = height;
     matrix->width = width;
     matrix->values = (float**)(calloc)(height, sizeof(float*));
@@ -49,6 +53,10 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
     else if (source.width < 1) {
         return FAILED_WIDTH_ERROR;
     }
+    result = (PMatrix*)(malloc)(1 * sizeof(PMatrix));
+    if (result == nullptr) {
+        return MEMORY_ALLC_ERROR;
+    }
     result->height = source.height;
     result->width = source.width;
     result->values = (float**)(malloc)(source.height * sizeof(float*));
@@ -66,6 +74,7 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
             result->values[i][j] = source.values[i][j];
         }
     }
+    return ERROR_SUCCESS;
 }
 
 /**
@@ -73,7 +82,13 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
  *
  * @param matrix the matrix to destroy.
  */
-void matrix_destroy(PMatrix matrix);
+void matrix_destroy(PMatrix matrix) {
+    int i = 0;
+    for (i = 0; i < matrix.height; i++) {
+        free(matrix.values[i]);
+    }
+    free(matrix.values);
+}
 
 /**
  * @brief Returns the height of a give matrix.
