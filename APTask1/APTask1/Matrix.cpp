@@ -97,7 +97,13 @@ void matrix_destroy(PMatrix matrix) {
  * @param[out] result On output, contains the height of the matrix.
  * @return ErrorCode
  */
-ErrorCode matrix_getHeight(CPMatrix matrix, uint32_t* result);
+ErrorCode matrix_getHeight(CPMatrix matrix, uint32_t* result) {
+    if (matrix.height < 1) {
+        return FAILED_HEIGHT_ERROR;
+    }
+    *result = matrix.height;
+    return ERROR_SUCCESS;
+}
 
 /**
  * @brief Returns the width of a give matrix.
