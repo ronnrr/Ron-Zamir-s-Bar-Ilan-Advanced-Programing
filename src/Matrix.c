@@ -2,7 +2,7 @@
 typedef struct Matrix {
     uint32_t height;
     uint32_t width;
-    float** values;
+    double** values;
 }Matrix;
 /**
  * @brief Creates a new matrix of a given height an width,
@@ -15,7 +15,7 @@ typedef struct Matrix {
  * @return ErrorCode
  */
 ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
-    int i = 0;
+    uint32_t i = 0;
     if (matrix == NULL) {
         return NULL_POINTER_ERROR;
     }
@@ -31,12 +31,12 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
     }
     (*matrix)->height = height;
     (*matrix)->width = width;
-    (*matrix)->values = (float**)(calloc)(height, sizeof(float*));
+    (*matrix)->values = (double**)(calloc)(height, sizeof(double*));
     if ((*matrix)->values == NULL) {
         return MEMORY_ALLC_ERROR;
     }
     for (i = 0; i < height; i++) {
-        (*matrix)->values[i] = (float*)(calloc)(width, sizeof(float));
+        (*matrix)->values[i] = (double*)(calloc)(width, sizeof(double));
         if ((*matrix)->values[i] == NULL) {
             return MEMORY_ALLC_ERROR;
         }
@@ -53,8 +53,8 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
  * @return ErrorCode
  */
 ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
-    int i = 0;
-    int j = 0;
+    uint32_t i = 0;
+    uint32_t j = 0;
     if (result == NULL) {
         return NULL_POINTER_ERROR;
     }
@@ -81,12 +81,12 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
     }
     (*result)->height = (source)->height;
     (*result)->width = (source)->width;
-    (*result)->values = (float**)(malloc)(source->height * sizeof(float*));
+    (*result)->values = (double**)(malloc)(source->height * sizeof(double*));
     if ((*result)->values == NULL) {
         return MEMORY_ALLC_ERROR;
     }
     for (i = 0; i < source->height; i++) {
-        (*result)->values[i] = (float*)(malloc)(source->width * sizeof(float));
+        (*result)->values[i] = (double*)(malloc)(source->width * sizeof(double));
         if ((*result)->values[i] == NULL) {
             return MEMORY_ALLC_ERROR;
         }
@@ -105,10 +105,10 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
  * @param matrix the matrix to destroy.
  */
 void matrix_destroy(PMatrix matrix) {
+    uint32_t i = 0;
     if (matrix == NULL) {
         return;
     }
-    int i = 0;
     for (i = 0; i < matrix->height; i++) {
         free(matrix->values[i]);
     }
@@ -170,7 +170,7 @@ ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result) {
  */
 ErrorCode matrix_setValue(PMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
     double value) {
-    int i = 0;
+    uint32_t i = 0;
     if (matrix == NULL) {
         return NULL_POINTER_ERROR;
     }
@@ -246,8 +246,8 @@ ErrorCode matrix_getValue(CPMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
  * @return ErrorCode
  */
 ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
-    int i = 0;
-    int j = 0;
+    uint32_t i = 0;
+    uint32_t j = 0;
     if (result == NULL) {
         return NULL_POINTER_ERROR;
     }
@@ -291,12 +291,12 @@ ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
     }
     (*result)->height = lhs->height;
     (*result)->width = lhs->width;
-    (*result)->values = (float**)(malloc)((*result)->height * sizeof(float*));
+    (*result)->values = (double**)(malloc)((*result)->height * sizeof(double*));
     if ((*result)->values == NULL) {
         return MEMORY_ALLC_ERROR;
     }
     for (i = 0; i < (*result)->height; i++) {
-        (*result)->values[i] = (float*)(malloc)((*result)->width * sizeof(float));
+        (*result)->values[i] = (double*)(malloc)((*result)->width * sizeof(double));
     }
     for (i = 0; i < (*result)->height; i++) {
         for (j = 0; j < (*result)->width; j++) {
@@ -316,9 +316,9 @@ ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
  * @return ErrorCode
  */
 ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
-    int i = 0;
-    int j = 0;
-    int k = 0;
+    uint32_t i = 0;
+    uint32_t j = 0;
+    uint32_t k = 0;
     if (result == NULL) {
         return NULL_POINTER_ERROR;
     }
@@ -362,12 +362,12 @@ ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
     }
     (*result)->height = lhs->height;
     (*result)->width = rhs->width;
-    (*result)->values = (float**)(malloc)((*result)->height * sizeof(float*));
+    (*result)->values = (double**)(malloc)((*result)->height * sizeof(double*));
     if ((*result)->values == NULL) {
         return MEMORY_ALLC_ERROR;
     }
     for (i = 0; i < (*result)->height; i++) {
-        (*result)->values[i] = (float*)(malloc)((*result)->width * sizeof(float));
+        (*result)->values[i] = (double*)(malloc)((*result)->width * sizeof(double));
         if ((*result)->values[i] == NULL) {
             return MEMORY_ALLC_ERROR;
         }
@@ -397,8 +397,8 @@ ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
  * @return ErrorCode
  */
 ErrorCode matrix_multiplyWithScalar(PMatrix matrix, double scalar) {
-    int i = 0;
-    int j = 0;
+    uint32_t i = 0;
+    uint32_t j = 0;
     if (matrix == NULL) {
         return NULL_POINTER_ERROR;
     }
@@ -418,7 +418,7 @@ ErrorCode matrix_multiplyWithScalar(PMatrix matrix, double scalar) {
     }
     for (i = 0; i < matrix->height; i++) {
         for (j = 0; j < matrix->width; j++) {
-            matrix->values[i][j] *= scalar;
+            matrix->values[i][j] *= (double) scalar;
         }
     }
     return ERROR_SUCCESS;
