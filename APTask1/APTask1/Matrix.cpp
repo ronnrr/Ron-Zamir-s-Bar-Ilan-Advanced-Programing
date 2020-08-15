@@ -131,6 +131,7 @@ ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result) {
         return FAILED_WIDTH_ERROR;
     }
     *result = matrix.width;
+    return ERROR_SUCCESS;
 }
 
 /**
@@ -157,6 +158,7 @@ ErrorCode matrix_setValue(PMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
         return OUT_OF_BOUNDS_ERROR;
     }
     matrix.values[rowIndex][colIndex] = value;
+    return ERROR_SUCCESS;
 }
 
 /**
@@ -170,7 +172,22 @@ ErrorCode matrix_setValue(PMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
  * @return ErrorCode
  */
 ErrorCode matrix_getValue(CPMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
-    double* value);
+    double* value) {
+    if (matrix.height < 1) {
+        return FAILED_HEIGHT_ERROR;
+    }
+    else if (matrix.width < 1) {
+        return FAILED_WIDTH_ERROR;
+    }
+    else if (rowIndex >= matrix.height) {
+        return OUT_OF_BOUNDS_ERROR;
+    }
+    else if (colIndex >= matrix.width) {
+        return OUT_OF_BOUNDS_ERROR;
+    }
+    *value = matrix.values[rowIndex][colIndex];
+    return ERROR_SUCCESS;
+}
 
 /**
  * @brief Computes the addition of two matrices.
