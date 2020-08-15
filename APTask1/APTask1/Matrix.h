@@ -6,7 +6,17 @@
 
 // The implementation of the struct is up to you
 typedef struct Matrix* PMatrix;
+typedef struct PMatrix {
+    uint32_t* height;
+    uint32_t* width;
+    uint32_t** values;
+} PMatrix;
 typedef const struct Matrix* CPMatrix;
+typedef const struct CPMatrix {
+    const uint32_t* const height;
+    const uint32_t* const weight;
+    const uint32_t** const values;
+}CPMatrix;
 
 /**
  * @brief Creates a new matrix of a given height an width,
