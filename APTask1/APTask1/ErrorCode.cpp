@@ -34,5 +34,8 @@ const char* error_getErrorMessage(ErrorCode code) {
     if (code == NULL_POINTER_ERROR) {
         return "Pointer given to function was a null pointer, and therefore the function was unable to proceed";
     }
+    if (code == OUT_OF_BOUNDS_ERROR) {
+        return "Index accessed was out of bounds. Please try to enter a valid index set.";
+    }
     return nullptr;
 }

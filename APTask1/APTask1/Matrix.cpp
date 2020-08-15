@@ -143,7 +143,21 @@ ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result) {
  * @return ErrorCode
  */
 ErrorCode matrix_setValue(PMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
-    double value);
+    double value) {
+    if (matrix.height < 1) {
+        return FAILED_HEIGHT_ERROR;
+    }
+    else if (matrix.width < 1) {
+        return FAILED_WIDTH_ERROR;
+    }
+    else if (rowIndex >= matrix.height) {
+        return OUT_OF_BOUNDS_ERROR;
+    }
+    else if (colIndex >= matrix.width) {
+        return OUT_OF_BOUNDS_ERROR;
+    }
+    matrix.values[rowIndex][colIndex] = value;
+}
 
 /**
  * @brief Sets a value to the matrix.
