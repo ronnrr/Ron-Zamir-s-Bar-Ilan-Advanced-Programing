@@ -23,8 +23,4 @@ bool error_isSuccess(ErrorCode code);
  * @param[in] code the error code.
  * @return const char* the textual representation of the error code.
  */
-const char* error_getErrorMessage(ErrorCode code) {
-    if (code = MEMORY_ALLC_ERROR) {
-        return "Memory allocation failed";
-    }
-}
+const char* error_getErrorMessage(ErrorCode code);
