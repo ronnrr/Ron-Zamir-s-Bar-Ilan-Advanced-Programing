@@ -59,6 +59,14 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
     else if (source.width < 1) {
         return FAILED_WIDTH_ERROR;
     }
+    else if (source.values == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
+    for (i = 0; i < source.height; i++) {
+        if (source.values[i] == nullptr) {
+            return NULL_POINTER_ERROR;
+        }
+    }
     result = (PMatrix*)(malloc)(1 * sizeof(PMatrix));
     if (result == nullptr) {
         return MEMORY_ALLC_ERROR;
@@ -145,6 +153,7 @@ ErrorCode matrix_getWidth(CPMatrix matrix, uint32_t* result) {
  */
 ErrorCode matrix_setValue(PMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
     double value) {
+    int i = 0;
     if (matrix.height < 1) {
         return FAILED_HEIGHT_ERROR;
     }
@@ -156,6 +165,12 @@ ErrorCode matrix_setValue(PMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
     }
     else if (colIndex >= matrix.width) {
         return OUT_OF_BOUNDS_ERROR;
+    }
+    else if (matrix.values == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
+    else if (matrix.values[colIndex] == nullptr) {
+        return NULL_POINTER_ERROR;
     }
     matrix.values[rowIndex][colIndex] = value;
     return ERROR_SUCCESS;
@@ -184,6 +199,12 @@ ErrorCode matrix_getValue(CPMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
     }
     else if (colIndex >= matrix.width) {
         return OUT_OF_BOUNDS_ERROR;
+    }
+    else if (matrix.values == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
+    else if (matrix.values[colIndex] == nullptr) {
+        return NULL_POINTER_ERROR;
     }
     *value = matrix.values[rowIndex][colIndex];
     return ERROR_SUCCESS;
@@ -218,6 +239,19 @@ ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
     }
     else if (rhs.width != lhs.width || rhs.height != lhs.height) {
         return INAPROPRIATE_MATRIX_DIMENSIONS_FOR_ADDING_ERROR;
+    }
+    else if (lhs.values == nullptr || rhs.values == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
+    for (i = 0; i < lhs.height; i++) {
+        if (lhs.values[i] == nullptr) {
+            return NULL_POINTER_ERROR;
+        }
+    }
+    for (i = 0; i < rhs.height; i++) {
+        if (rhs.values[i] == nullptr) {
+            return NULL_POINTER_ERROR;
+        }
     }
     result = (PMatrix*)(malloc)(1 * sizeof(PMatrix));
     if (result == nullptr) {
@@ -271,6 +305,19 @@ ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
     else if (lhs.width != rhs.height) {
         return INAPROPRIATE_MATRIX_DIMENSIONS_FOR_MULTIPLICATION_ERROR;
     }
+    else if (lhs.values == nullptr || rhs.values == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
+    for (i = 0; i < lhs.height; i++) {
+        if (lhs.values[i] == nullptr) {
+            return NULL_POINTER_ERROR;
+        }
+    }
+    for (i = 0; i < rhs.height; i++) {
+        if (rhs.values[i] == nullptr) {
+            return NULL_POINTER_ERROR;
+        }
+    }
     result = (PMatrix*)(malloc)(1 * sizeof(PMatrix));
     if (result == nullptr) {
         return MEMORY_ALLC_ERROR;
@@ -312,5 +359,26 @@ ErrorCode matrix_multiplyMatrices(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
  * @return ErrorCode
  */
 ErrorCode matrix_multiplyWithScalar(PMatrix matrix, double scalar) {
-
+    int i = 0;
+    int j = 0;
+    if (matrix.height < 1) {
+        return FAILED_HEIGHT_ERROR;
+    }
+    else if (matrix.width < 1) {
+        return FAILED_WIDTH_ERROR;
+    }
+    else if (matrix.values == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
+    for (i = 0; i < matrix.height; i++) {
+        if (matrix.values[i] == nullptr) {
+            return NULL_POINTER_ERROR;
+        }
+    }
+    for (i = 0; i < matrix.height; i++) {
+        for (j = 0; j < matrix.width; j++) {
+            matrix.values[i][j] *= scalar;
+        }
+    }
+    return ERROR_SUCCESS;
 }
