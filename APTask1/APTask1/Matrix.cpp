@@ -10,10 +10,10 @@
  * @return ErrorCode
  */
 ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
+    int i = 0;
     if (matrix == nullptr) {
         return NULL_POINTER_ERROR;
     }
-    int i = 0;
     if (height < 1) {
         return FAILED_HEIGHT_ERROR;
     }
@@ -48,11 +48,11 @@ ErrorCode matrix_create(PMatrix* matrix, uint32_t height, uint32_t width) {
  * @return ErrorCode
  */
 ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
+    int i = 0;
+    int j = 0;
     if (result == nullptr) {
         return NULL_POINTER_ERROR;
     }
-    int i = 0;
-    int j = 0;
     if (source.height < 1) {
         return FAILED_HEIGHT_ERROR;
     }
@@ -70,7 +70,7 @@ ErrorCode matrix_copy(PMatrix* result, CPMatrix source) {
         return MEMORY_ALLC_ERROR;
     }
     for (i = 0; i < source.height; i++) {
-        result->values[i] = (float*)(malloc)(source.height * sizeof(float));
+        result->values[i] = (float*)(malloc)(source.width * sizeof(float));
         if (result->values[i] == nullptr) {
             return MEMORY_ALLC_ERROR;
         }
@@ -198,7 +198,47 @@ ErrorCode matrix_getValue(CPMatrix matrix, uint32_t rowIndex, uint32_t colIndex,
  * @param[in] rhs The right hand side of the addition operation.
  * @return ErrorCode
  */
-ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs);
+ErrorCode matrix_add(PMatrix* result, CPMatrix lhs, CPMatrix rhs) {
+    int i = 0;
+    int j = 0;
+    if (result == nullptr) {
+        return NULL_POINTER_ERROR;
+    }
+    else if (lhs.height < 1) {
+        return FAILED_HEIGHT_ERROR;
+    }
+    else if (lhs.width < 1) {
+        return FAILED_WIDTH_ERROR;
+    }
+    else if (rhs.height < 1) {
+        return FAILED_HEIGHT_ERROR;
+    }
+    else if (rhs.width < 1) {
+        return FAILED_WIDTH_ERROR;
+    }
+    else if (rhs.width != lhs.width || rhs.height != lhs.height) {
+        return INAPROPRIATE_MATRIX_DIMENSIONS_FOR_FUNCTIONS_ERROR;
+    }
+    result = (PMatrix*)(malloc)(1 * sizeof(PMatrix));
+    if (result == nullptr) {
+        return MEMORY_ALLC_ERROR;
+    }
+    result->height = lhs.height;
+    result->width = lhs.width;
+    result->values = (float**)(malloc)(result->height * sizeof(float*));
+    if (result->values == nullptr) {
+        return MEMORY_ALLC_ERROR;
+    }
+    for (i = 0; i < result->height; i++) {
+        result->values[i] = (float*)(malloc)(result->width * sizeof(float));
+    }
+    for (i = 0; i < result->height; i++) {
+        for (j = 0; j < result->width; j++) {
+            result->values[i][j] = rhs.values[i][j] + lhs.values[i][j];
+        }
+    }
+    return ERROR_SUCCESS;
+}
 
 /**
  * @brief Computes the multiplication of two matrices.

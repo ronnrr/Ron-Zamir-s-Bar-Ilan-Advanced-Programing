@@ -32,10 +32,13 @@ const char* error_getErrorMessage(ErrorCode code) {
         return "Matrix sent to function either is not allocated properly or just doesn't exist.";
     }
     if (code == NULL_POINTER_ERROR) {
-        return "Pointer given to function was a null pointer, and therefore the function was unable to proceed";
+        return "Pointer given to function was a null pointer, and therefore the function was unable to proceed.";
     }
     if (code == OUT_OF_BOUNDS_ERROR) {
         return "Index accessed was out of bounds. Please try to enter a valid index set.";
+    }
+    if (code == INAPROPRIATE_MATRIX_DIMENSIONS_FOR_FUNCTIONS_ERROR) {
+        return "The given matrixes do not share the dimentions required to execute such operators upon them.";
     }
     return nullptr;
 }
