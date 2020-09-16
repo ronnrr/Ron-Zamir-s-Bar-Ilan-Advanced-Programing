@@ -22,7 +22,7 @@ typedef enum {
  * @param[in] code the error code.
  * @return whether the error code indicates a success or not.
  */
-bool error_isSuccess(ErrorCode code);
+const bool error_isSuccess(const ErrorCode code);
 
 /**
  * @brief gets a textual error message for a given error code.
@@ -30,4 +30,4 @@ bool error_isSuccess(ErrorCode code);
  * @param[in] code the error code.
  * @return const char* the textual representation of the error code.
  */
-const char* error_getErrorMessage(ErrorCode code);
+const char* error_getErrorMessage(const ErrorCode code);
