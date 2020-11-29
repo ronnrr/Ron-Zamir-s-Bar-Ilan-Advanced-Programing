@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-
 #include "ErrorCode.h"
 
 // The implementation of the struct is up to you
